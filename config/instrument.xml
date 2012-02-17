@@ -1,0 +1,392 @@
+<!-- This is a QAudio configuration file.
+
+     Some rules:
+
+     In the end of parmeter explanations the brackets will contain the default vaue of element.
+
+     The parameter tag explanations will tell you the default value of the tag (if there is any).
+     Check the brackets after the explanations. The (-) means, there is no default value.
+
+     Every effect or module will create an output buffer. If you give the out parameter,
+     the default output buffer will be deleted.
+-->
+
+
+<QAUDIO>
+
+
+
+
+  <!-- PRE PART
+       Here come all ports and global buffer declarations.
+       Also possible to declare global LFOs or ADSRs.      -->
+  <PRE>
+
+
+    <!-- JACK GLOBAL PORT DECLARATIONS
+         * in - Input ports
+         * out - Output ports  -->
+    <PORT in = "portName"></PORT>
+    <PORT out = "portName"></PORT>
+
+
+    <!-- Global buffer allocations.
+         A buffer can hold the following kind of informations:
+         - Audio samples (32 bit floating)
+         - Frequency informations
+         - Modulation data (0..1, or anything)
+         All the buffers will have the same size, which comes from the Jack server.
+         * buffer - This will be the name of the buffer. Must be unique. -->
+    <BUFFER name = "outputL"
+            name = "outputR">
+
+
+  </PRE>
+
+	
+  <!-- Source selector
+	* name         - Selector name. The input buffers will be declared on the same name,
+	                 such as NameIn1, NameIn2, ... (-)
+	* out          - The output buffer. (NameOut)
+	* channels     - Number of inputs handled. (-)
+	* toggle_event - A key, which will switch trough the imputs. (-) -->
+  <SELECTOR name   = "Name"
+	  out	       = "Buffer"
+	  channels     = "n"
+	  toggle_event = "key">
+
+
+  <!-- Source switch
+	* name         - Switch name. The input buffer will be declared on the same name,
+	                 such as NameIn (-)
+	* out          - The output buffer. (NameOut)
+	* channels     - Number of inputs handled. (-)
+	* toggle_event - A key, which will switch trough the imputs. (-) -->
+  <SWITCH name     = "Name"
+	  out	       = "Buffer"
+	  channels     = "n"
+	  toggle_event = "key">
+
+
+  <!-- This is a new instrument
+       * name         - Instrument name. Must be unique.
+       * polyphony    - The maximal number of polyphony (1)
+       * midi_channel - The index of midi channel the instrument listens on. (-)
+       * sample_rate  - The instruments sample rate. (default sample rate) (???)-->
+  <INSTRUMENT name         = "Name"
+              polyphony    = "n"
+              midi_channel = "n"
+              sample_rate  = "n">
+
+
+    <!-- Local buffer allocations.
+    (The syntax is the same as global allocations)
+    You can allocate buffers here, what you need to use in this instrument.
+    The scope is these buffers is this instrument.
+    IMPORTANT: There are some modules (e.g. oscillators), which allocates
+    automatically an output buffer and you don't need to do that. -->
+    <BUFFER name = "abc"
+            name = "def">
+
+
+    <!-- WIRE MODULE (???)
+	 * in  - The input buffer (-)
+	 * out - The output buffer (-)  -->
+    <WIRE in  = "Buffer"
+	      out = "Buffer" >
+
+
+    <!-- VCO MODULE
+         * name - Effect name. Must be unique.(-)
+         * freq - The name of the buffer which holds the freq information. (-)
+         * wave - Waveform: SINE, SQUARE, TRIANGLE, SAW, NOISE. (SINE)
+         * out  - Output buffer. (NAME)
+         * mix  - Mixing type: ADD, RINGMOD. (ADD)
+         * sync - A buffer to sync. (NONE)  -->
+    <VCO name   = "Name"
+         freq   = "f"
+         wave   = "WAVE"
+         out    = "Buffer"
+         mix    = "MIX"
+         sync   = "Buffer"></VCO>
+
+
+    <!-- LFO MODULE
+         * name  - LFO name. Must be unique! (-)
+         * freq  - LFO freq. (-)
+         * phase - Oscillator starting phase (0°)
+         * wave  - Waveform: SINE1, SINE2, TRIANGLE, SQUARE, SAW1, SAW2. (SINE) -->
+    <LFO name    = "Name"
+         freq    = "n"
+         phase   = "n"
+         wave    = "WAVE"></LFO>
+
+
+    <!-- VCA MODULE
+         * name - LFO name. Must be unique! (-)
+         * in   - Input buffer. (-)
+         * out  - Output buffer. (this name)
+         * mod  - Buffer with modulation data, or a given value. (-)    -->
+    <VCA name   = "Name"
+         in     = "Buffer"
+         out    = "Buffer"
+         mod    = "m"></VCA>
+
+
+    <!-- VCF MODULE
+         * name     - LFO name. Must be unique! (-)
+         * in       - Input buffer. (-)
+         * out      - Output buffer. (this name)
+         * freq1    - The lower freq in Hz. It is used, when the mod value is 0. (1000)
+         * freq2    - The upper freq in Hz. It is used, when the mod value is 1. (10000)
+         * freq_mod - Buffer with modulation data. (NONE)
+         * reso1    - Resonance value. (0)
+         * reso2    - Resonance value. (0)
+         * reso_mod - Resonance modulation (NONE)    -->
+    <VCF name       = "Name"
+         in         = "Buffer"
+         out        = "Buffer"
+         freq1      = "n"
+         freq2      = "n"
+         freq_mod   = "Buffer"
+         reso1      = "n"
+         reso2      = "n"
+         reso_mod   = "n"></VCF>
+
+
+    <!-- ADSR GENERATOR
+         * name    - Name. Must be unique. (-)
+         * trigger - A buffer containing the start information. (-)
+         * cyclic  - If the ADSR generator runs independently from the action buffer. Can be YES/NO/TRUE/FALSE. (FALSE)
+         * attack  - Time in ms. (1000)
+         * decay   - Decay level (0.5)
+         * sustain - (TODO - How is that exactly)
+         * release - Release time in ms (5000)    -->
+    <ADSR name     = "Name"
+          trigger  = "Buffer"
+          cyclic   = "YES"
+          attack   = "n"
+          decay    = "n"
+          sustain  = "n"
+          release  = "n"></ADSR>
+
+
+    <!-- ENVELOPE GENERATOR
+         * name    - Name. Must be unique.
+         * trigger - A buffer containing the start information. (-)
+         * cyclic  - If the ADSR generator runs independently from the action buffer. Can be YES/NO/TRUE/FALSE. (FALSE)    -->
+    <ENVELOPE name    = "name"
+              trigger = "Buffer"
+              cyclic  = "YES">
+      <!-- POINT DECLARATIONS
+           * delay - Time in ms. (100)
+           * level - The points level (0.5)      -->
+      <POINT delay = "n"
+             level = "n"></POINT>
+      <!--  ...  -->
+      <POINT delay = "n"
+             level = "n"></POINT></ENVELOPE>
+
+
+      <!-- SAMPLE & HOLD MODULE
+         * name    - Name. Must be unique. (-)
+         * in      - Input buffer. (-)
+         * out     - Output buffer. (this name)
+         * trigger - Buffer (-)
+      -->
+      <SH name     = "Name"
+          in       = "Buffer"
+          out      = "Buffer"
+          trigger  = "Buffer"></SH>
+
+
+  <!-- SIGNAL MODIFIER
+	 * name  - Name. Must be unique. (-)
+	 * in    - Input buffer. (-)
+	 * out   - Output buffer. (this name)
+	 * mul   - Multiplying value or buffer. (-)
+	 * add   - Adding value or biffer. (-)    -->
+    <MODIFIER name = "Name"
+	    in   = "Buffer"
+	    out  = "Buffer"
+	    mul  = "n"
+	    add  = "n"></MODIFIER>
+
+
+
+  </INSTRUMENT>
+
+
+
+
+  <!-- Here comes any instrument definitions.... -->
+  <INSTRUMENT name         = "Name"
+              polyphony    = "n"
+              midi_channel = "n"
+              sample_rate  = "n">
+
+
+    <!-- IMPORT INSTRUMENT
+         You can import an instrument from other instrument.xml file.
+         The name, polyphony, midi channel and sample rate is changed,
+         but the instrument will be the same.    -->
+    <IMPORT file       = "File"
+            instrument = "Instrument"></IMPORT>
+
+
+  </INSTRUMENT>
+
+
+
+
+  <!-- DSP EFFECT DECLARATION
+       This will be a DSP effect.
+       You can declare any number of different effects, which will be executed
+       same time.
+       * name       - The nam of the effect. Must be unique.
+       * input      - A Jack port. Can be shared with other DSP effects.
+       * output     - Any global buffer
+       * on_event   - Any key combination or midi event (TODO - How should this be implemented?)
+       * off_event  - Any key combination or midi event (TODO - How should this be implemented?) -->
+  <DSP name         = "Name"
+       in           = "abc"
+       out          = "buff"
+       on_event     = "Ctrl+1"
+       off_event    = "Shift+1">
+
+
+    <!-- BUFFER DECLARATIONS -->
+    <BUFFER name = "abc"
+            name = "abc"></BUFFER>
+
+
+    <!-- DELAY EFFECT
+         * name - Name. Must be unique. (-)
+         * in - Input buffer (-)
+         * out - Output buffer (NAME)
+         * delay - The amount of delay in ms (0) -->
+    <DELAY name  = "Name"
+           in    = "buff"
+           out   = "buff"
+           delay = "n"></DELAY>
+
+
+    <!-- OVERDRIVE EFFECT
+         * name - Name. Must be unique. (-)
+         * in - Input buffer (-)
+         * out - Output buffer (NAME)
+         * level - Distortion level: 0..1 Smaller value gives a more distorted signal. (1)
+         * wet - Wet value: 0..1 (0)     -->
+    <OVERDRIVE name  = "Name"
+               in    = "buff"
+               out   = "buff"
+               level = "n"
+               wet   = "n"></OVERDRIVE>
+
+
+    <!-- CROSSOVER DISTORTION EFFECT
+         * name - Name. Must be unique. (-)
+         * in - Input buffer (-)
+         * out - Output buffer (NAME)
+         * level - Distortion level: 0..1 Bigger value gives a more distorted signal. (1)
+         * wet - Wet value: 0..1 (0)     -->
+    <CROSSOVER name  = "Name"
+               in    = "buff"
+               out   = "buff"
+               level = "n"
+               wet   = "n"></CROSSOVER>
+
+
+    <!-- CHORUS EFFECT
+         * name - Name. Must be unique. (-)
+         * in - Input buffer (-)
+         * out - Output buffer (NAME)
+         * mod - Buffer containing the modulation values. (-)
+         * dealy1 - Delay in ms if the modulation value is 0. (20)
+         * dealy2 - Delay in ms if the modulation value is 1. (50)
+         * wet - Wet value: 0..1 (0) -->
+    <CHORUS name   = "Name"
+            in     = "buff"
+            out    = "buff"
+            mod    = "buff"
+            delay1 = "n"
+            delay2 = "n"
+            wet    = "n"></CHORUS>
+
+
+    <!-- FLANGER EFFECT
+         * name - Name. Must be unique. (-)
+         * in - Input buffer. (-)
+         * out - Output buffer. (NAME)
+         * mod - Buffer containing the modulation values. (-)
+         * dealy1 - Delay in ms if the modulation value is 0. (1)
+         * dealy2 - Delay in ms if the modulation value is 1. (10)
+         * feedback - Feedback type. Can be  positive or negative. (POSITIVE)
+         * feedback_level - Amount of feedback: 0..1 (0)
+         * wet - Wet value: 0..1 (0)    -->
+    <FLANGER name           = "Name"
+             in             = "buff"
+             out            = "buff"
+             mod            = "buff"
+             delay1         = "n"
+             delay2         = "n"
+             feedback       = "POS/NEG"
+             feedback_level = "n"
+             wet            = "n"></FLANGER>
+
+
+    <!-- DYNAMIC COMPRESSOR EFFECT
+         * name - Name. Must be unique. (-)
+         * in - Input buffer. (-)
+         * out - Output buffer (NAME)
+         * efficiency - The effects working: 0..1 (0) (TODO - Better explanation) -->
+    <COMPRESSOR name       = "Name"
+                in         = "buff"
+                out        = "buff"
+                efficiency = "n"></COMPRESSOR>
+
+
+
+    <!-- MIXER
+         * name - Name. Must be unique. (-)
+         * in   - Input buffer. Should at least two. (-)
+         * out  - Output buffer. (NAME) -->
+    <MIX name   = "Name"
+         in     = "buff"
+         in     = "buff"
+         out    = "buff"></MIX>
+
+
+
+	<!-- WAV PLAYER
+	     * name - Effect name. Must be unique. (-)
+	     * play - Direction/Speed of playing. (1-Normal, 2-Double, -1-Back) (1)
+	     * file - Source file. (-)
+	     * jump - The time stamp, where to jump. If 0, no jump. (0)
+	     * jump_relative - To jump relative. If 0, no jump. (0)  -->
+	<WAV name             = "Name"
+		play          = "Speed"
+		file          = "File"
+		jump          = "Time"
+		jump_relative = "TimeRelative"></WAV>>
+
+
+
+
+  </DSP>
+
+
+
+
+
+  <!-- POSTPROCESSING
+       This can have some DSP effects (e.g. reverbation, ...) which should be applied
+       to every instruments, or more selected instruments  -->
+  <POST>
+  </POST>
+
+
+
+
+
+</QAUDIO>

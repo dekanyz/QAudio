@@ -1,0 +1,9 @@
+--not-used,   -n  - Print the non used buffers ID
+--instrument, -i  - Use this instrument file
+
+--verbose,    -v  - Show warnings
+--debug,      -d  - Show debug Messages
+--quiet,      -q  - Do not show anymessages
+
+--help,       -h  - Help
+

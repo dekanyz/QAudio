@@ -1,0 +1,4 @@
+<QSynthConfig
+    threads="2"
+    multiple_instances="true">
+</QSynthConfig>
