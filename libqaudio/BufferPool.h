@@ -1,4 +1,4 @@
-/*****************************************************************************************************************
+/***********************************************************************************************
  * Copyright (C) 2011 Zoltán Dékány (dekaaa71@gmail.com)
  *
  * QAudio - BufferPool.h
@@ -10,7 +10,7 @@
  * - Allocate memory for audio data
  * - Deallocate memory for audio data
  * - Clearing audio data
- ****************************************************************************************************************/
+ **********************************************************************************************/
 
 #ifndef __BUFFER_POOL_H
 #define __BUFFER_POOL_H
@@ -79,6 +79,11 @@ class BufferPool
         /* Delete all the buffers structure */
         void deleteAll();
 
+        /* Get back the object pointer.
+         * Because, I don't want to pass the pointer to every class,
+         * this will be a static function.
+         * TODO: Is this solution fine??? */
+        static BufferPool * getInstance();
 
     private:
 

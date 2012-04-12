@@ -4,7 +4,7 @@ CFLAGS = -g -Wall
 LDFLAGS = -ljack 
 RM = /bin/rm -f
 
-PROG = qaudio
+PROG = libqaudio.so
 
 # Creating a list of object files (a .o file will belong to every .c)
 SRC  := $(wildcard *.c)
@@ -22,11 +22,15 @@ $(PROG): $(OBJS)
 
 
 # Source dependencies
-BufferPool.o: BufferPool.c BufferPool.h Buffer.h Jack.h
-Jack.o:	      Jack.c Jack.h
-Cli.o:		  Cli.c Cli.h
-Messages.o:	  Messages.c Messages.h Configure.h
-main.o:		  main.c
+# TODO: Clean these dependencies
+BufferPool.o: 		BufferPool.cpp BufferPool.h Buffer.h Jack.h
+Jack.o:	      		Jack.cpp Jack.h
+# Cli.o:		  		Cli.cpp Cli.h
+Messages.o:	  		Messages.cpp Messages.h Configure.h
+SingletonBase.o:	SingletonBase.cpp SingletonBase.h
+XmlParser.o:		XmlParser.cpp XmlParser.h
+
+# main.o:		  		main.c
 
 # rule for cleaning re-compilable files.
 clean:

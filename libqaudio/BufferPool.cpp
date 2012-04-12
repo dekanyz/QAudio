@@ -1,14 +1,14 @@
-/*****************************************************************************************************************
+/***********************************************************************************************
  * Copyright (C) 2011 Zoltán Dékány (dekaaa71@gmail.com)
  *
  * QAudio - BufferPool.c
  * -------------------------
  *
  * Implementation of BufferPool's functions
- ****************************************************************************************************************/
+ **********************************************************************************************/
 
 #include "BufferPool.h"
-#include "JackAudio.h"
+#include "Jack.h"
 
 
 BufferPool::BufferPool()  
@@ -20,7 +20,6 @@ BufferPool::BufferPool()
     return;
 }
 
-
 BufferPool::~BufferPool() 
 { 
     delete MemPtr; 
@@ -28,6 +27,14 @@ BufferPool::~BufferPool()
     return;
 }
 
+/*********************************************************************************************/
+
+static BufferPool * BufferPool::getInstance()
+{
+    return this;
+}
+
+/*********************************************************************************************/
 
 void BufferPool::createBuffer( std::string id )
 {
@@ -37,6 +44,7 @@ void BufferPool::createBuffer( std::string id )
     return;
 }
 
+/*********************************************************************************************/
 
 const Buffer & BufferPool::getBuffer( std::string id ) const
 {
@@ -52,6 +60,7 @@ const Buffer & BufferPool::getBuffer( std::string id ) const
     // TODO: ...or something!!
 }
 
+/*********************************************************************************************/
 
 void BufferPool::clearBuffers() 
 { 
@@ -60,6 +69,7 @@ void BufferPool::clearBuffers()
     return;
 }
 
+/*********************************************************************************************/
 
 void BufferPool::allocateBuffersMemory() 
 { 
@@ -77,6 +87,7 @@ void BufferPool::allocateBuffersMemory()
     return;
 }
 
+/*********************************************************************************************/
 
 void BufferPool::freeBuffersMemory() 
 { 
@@ -85,6 +96,7 @@ void BufferPool::freeBuffersMemory()
     return;
 }
 
+/*********************************************************************************************/
 
 void BufferPool::setBufferSize( int newSize ) 
 { 
@@ -93,12 +105,14 @@ void BufferPool::setBufferSize( int newSize )
     return; 
 }
 
+/*********************************************************************************************/
 
 int BufferPool::getBufferSize() 
 { 
     return BufferSize; 
 }
 
+/*********************************************************************************************/
 
 void BufferPool::resizeBuffers( int newSize ) 
 { 
@@ -109,6 +123,7 @@ void BufferPool::resizeBuffers( int newSize )
     return; 
 }
 
+/*********************************************************************************************/
 
 void BufferPool::deleteAll()
 {
@@ -119,6 +134,7 @@ void BufferPool::deleteAll()
     return;
 }
 
+/*********************************************************************************************/
 
 void BufferPool::setAllEmptyFlags()
 {
